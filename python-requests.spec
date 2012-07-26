@@ -1,17 +1,21 @@
+# TODO
+# - bundled external libs? packages/ contains:
+#   chardet/
+#   chardet2/
+#   oauthlib/
 %define 	module	requests
 Summary:	HTTP library for Python
 Name:		python-%{module}
 Version:	0.13.3
-%define		_verinternal	0.13.2
-%define		_relstr			11-g52b55cc
-Release:	0.1
+Release:	1
 License:	ISC
 Group:		Development/Languages/Python
-Source0:	https://github.com/kennethreitz/requests/tarball/develop/kennethreitz-%{module}-v%{version}-%{_relstr}.tar.gz
-# Source0-md5:	083bd0d48b75d2ab79f2636f5bb204fc
+Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}/%{name}-%{version}.tgz
+# Source0-md5:	d843cf4378a754bbdb4af865b02225b9
 URL:		https://github.com/kennethreitz/requests
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	sed >= 4.0
 Requires:	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -32,10 +36,16 @@ Things shouldn't be this way. Not in Python.
 %setup -qc
 mv *-%{module}-*/* .
 
+# fix version in module
+# tarball for 0.13.3 contains 0.13.2:
+#./HISTORY.rst:0.13.2 (2012-06-28)
+#./requests/__init__.py:__version__ = '0.13.2'
+#./requests/__init__.py:__build__ = 0x001302
+%{__sed} -i -e 's/0\.13\.2/0.13.3/; s/0x001302/0x001302/' requests/__init__.py
+
 %build
-# Filename says 0.13.3, __version__ says 0.13.2, so the test fails
-#ver=$(%{__python} -c "import requests; print requests.__version__")
-#test "$ver" = %{version}
+ver=$(%{__python} -c "import requests; print requests.__version__")
+test "$ver" = %{version}
 
 %{__python} setup.py build
 
@@ -56,5 +66,5 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS.rst README.rst LICENSE  docs
 %{py_sitescriptdir}/%{module}
 %if "%{py_ver}" > "2.4"
-%{py_sitescriptdir}/%{module}-%{_verinternal}-*.egg-info
+%{py_sitescriptdir}/%{module}-*.egg-info
 %endif
