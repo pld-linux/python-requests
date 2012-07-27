@@ -10,8 +10,8 @@ Version:	0.13.3
 Release:	1
 License:	ISC
 Group:		Development/Languages/Python
-Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}/%{name}-%{version}.tgz
-# Source0-md5:	d843cf4378a754bbdb4af865b02225b9
+Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}-11-g52b55cc/%{name}-%{version}.tgz
+# Source0-md5:	d4e0de0ecfc14128c3a878d9f82328a0
 URL:		https://github.com/kennethreitz/requests
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
