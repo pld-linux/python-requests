@@ -7,7 +7,7 @@
 Summary:	HTTP library for Python
 Name:		python-%{module}
 Version:	0.13.3
-Release:	1
+Release:	2
 License:	ISC
 Group:		Development/Languages/Python
 Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}-11-g52b55cc/%{name}-%{version}.tgz
@@ -21,6 +21,23 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
+Requests is an ISC Licensed HTTP library, written in Python, for human
+beings.
+
+Most existing Python modules for sending HTTP requests are extremely
+verbose and cumbersome. Python's builtin urllib2 module provides most
+of the HTTP capabilities you should need, but the api is thoroughly
+broken. It requires an enormous amount of work (even method overrides)
+to perform the simplest of tasks.
+
+Things shouldn't be this way. Not in Python.
+
+%package -n python3-requests
+Summary:	HTTP library, written in Python, for human beings
+License:	ISC
+Group:		Development/Languages/Python
+
+%description -n python3-requests
 Requests is an ISC Licensed HTTP library, written in Python, for human
 beings.
 
@@ -47,14 +64,29 @@ mv *-%{module}-*/* .
 ver=$(%{__python} -c "import requests; print requests.__version__")
 test "$ver" = %{version}
 
-%{__python} setup.py build
+mkdir py2-egg py3-egg
+%{__python} setup.py build --build-base py2 egg_info --egg-base py2-egg
+%{__python3} setup.py build --build-base py3 egg_info --egg-base py3-egg
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install \
+%{__python} setup.py \
+	build --build-base py2 \
+        egg_info --egg-base py2-egg \
+        install \
 	--skip-build \
 	--optimize=2 \
 	--root=$RPM_BUILD_ROOT
+
+%{__python3} setup.py  \
+	build --build-base py3 \
+        egg_info --egg-base py3-egg \
+        install \
+        --skip-build \
+        --optimize=2 \
+        --root=$RPM_BUILD_ROOT
+
 
 %py_postclean
 
@@ -68,3 +100,8 @@ rm -rf $RPM_BUILD_ROOT
 %if "%{py_ver}" > "2.4"
 %{py_sitescriptdir}/%{module}-*.egg-info
 %endif
+
+%files -n python3-requests
+%defattr(644,root,root,755)
+%{py3_sitescriptdir}/%{module}
+%{py3_sitescriptdir}/%{module}-*.egg-info
