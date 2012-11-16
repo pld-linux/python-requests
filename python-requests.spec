@@ -12,7 +12,7 @@ Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
 Version:	0.13.9
-Release:	2
+Release:	3
 License:	ISC
 Group:		Development/Languages/Python
 Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}#/%{module}-%{version}.tar.gz
