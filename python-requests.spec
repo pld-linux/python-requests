@@ -11,12 +11,12 @@
 Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
-Version:	0.13.9
-Release:	3
+Version:	0.14.2
+Release:	1
 License:	ISC
 Group:		Development/Languages/Python
-Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}#/%{module}-%{version}.tar.gz
-# Source0-md5:	a0ecf4d6177183a4bb2f50d92ea54fd6
+Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}/%{module}-%{version}.tar.gz
+# Source0-md5:	db8842dbb5daed7e1e3d220d324d830a
 URL:		https://github.com/kennethreitz/requests
 BuildRequires:	python >= 1:2.6
 BuildRequires:	python3 >= 3.2
@@ -77,7 +77,7 @@ to perform the simplest of tasks. Things shouldn't be this way. Not in
 Python.
 
 %prep
-%setup -q -n kennethreitz-%{module}-1be2a55
+%setup -q -n kennethreitz-%{module}-63243b1
 
 # avoid "distutils.errors.DistutilsByteCompileError: byte-compiling is disabled."
 %{__sed} -i -e '/PYTHONDONTWRITEBYTECODE/d' setup.py
@@ -87,8 +87,8 @@ ver=$(%{__python} -c "import requests; print requests.__version__")
 test "$ver" = %{version}
 
 mkdir py2-egg py3-egg
-%{__python} setup.py build --build-base py2 egg_info --egg-base py2-egg
-%{__python3} setup.py build --build-base py3 egg_info --egg-base py3-egg
+%{__python} setup.py build --build-base py2
+%{__python3} setup.py build --build-base py3
 
 %if %{with doc}
 %{__make} -C docs html
@@ -98,7 +98,6 @@ mkdir py2-egg py3-egg
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py \
 	build --build-base py2 \
-        egg_info --egg-base py2-egg \
         install \
 	--skip-build \
 	--optimize=2 \
@@ -106,7 +105,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__python3} setup.py  \
 	build --build-base py3 \
-        egg_info --egg-base py3-egg \
         install \
         --skip-build \
         --optimize=2 \
