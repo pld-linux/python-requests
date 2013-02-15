@@ -11,12 +11,12 @@
 Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
-Version:	0.14.2
-Release:	1
+Version:	1.1.0
+Release:	0.1
 License:	ISC
 Group:		Development/Languages/Python
 Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}/%{module}-%{version}.tar.gz
-# Source0-md5:	db8842dbb5daed7e1e3d220d324d830a
+# Source0-md5:	89b4958831c4c3276ffe5d21ed53dec8
 URL:		https://github.com/kennethreitz/requests
 BuildRequires:	python >= 1:2.6
 BuildRequires:	python3 >= 3.2
@@ -77,7 +77,8 @@ to perform the simplest of tasks. Things shouldn't be this way. Not in
 Python.
 
 %prep
-%setup -q -n kennethreitz-%{module}-63243b1
+# kennethreitz-requests-1a7c91f
+%setup -q -n kennethreitz-%{module}-1a7c91f
 
 # avoid "distutils.errors.DistutilsByteCompileError: byte-compiling is disabled."
 %{__sed} -i -e '/PYTHONDONTWRITEBYTECODE/d' setup.py
