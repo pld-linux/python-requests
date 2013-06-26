@@ -1,0 +1,73 @@
+diff -uNr requests/adapters.py requests.new/adapters.py
+--- requests/adapters.py	2013-05-20 22:10:43.000000000 +0200
++++ requests.new/adapters.py	2013-06-26 22:46:17.947032253 +0200
+@@ -11,16 +11,16 @@
+ import socket
+ 
+ from .models import Response
+-from .packages.urllib3.poolmanager import PoolManager, ProxyManager
+-from .packages.urllib3.response import HTTPResponse
++from urllib3.poolmanager import PoolManager, ProxyManager
++from urllib3.response import HTTPResponse
+ from .compat import urlparse, basestring, urldefrag, unquote
+ from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,
+                     prepend_scheme_if_needed, get_auth_from_url)
+ from .structures import CaseInsensitiveDict
+-from .packages.urllib3.exceptions import MaxRetryError
+-from .packages.urllib3.exceptions import TimeoutError
+-from .packages.urllib3.exceptions import SSLError as _SSLError
+-from .packages.urllib3.exceptions import HTTPError as _HTTPError
++from urllib3.exceptions import MaxRetryError
++from urllib3.exceptions import TimeoutError
++from urllib3.exceptions import SSLError as _SSLError
++from urllib3.exceptions import HTTPError as _HTTPError
+ from .cookies import extract_cookies_to_jar
+ from .exceptions import ConnectionError, Timeout, SSLError
+ from .auth import _basic_auth_str
+diff -uNr requests/compat.py requests.new/compat.py
+--- requests/compat.py	2013-01-31 14:18:16.000000000 +0100
++++ requests.new/compat.py	2013-06-26 22:48:20.473035139 +0200
+@@ -4,7 +4,7 @@
+ pythoncompat
+ """
+ 
+-from .packages import charade as chardet
++import charade as chardet
+ 
+ import sys
+ 
+@@ -89,7 +89,7 @@
+     import cookielib
+     from Cookie import Morsel
+     from StringIO import StringIO
+-    from .packages.urllib3.packages.ordered_dict import OrderedDict
++    from urllib3.packages.ordered_dict import OrderedDict
+ 
+     builtin_str = str
+     bytes = str
+diff -uNr requests/__init__.py requests.new/__init__.py
+--- requests/__init__.py	2013-05-25 18:47:20.000000000 +0200
++++ requests.new/__init__.py	2013-06-26 22:45:40.990565797 +0200
+@@ -50,7 +50,7 @@
+ 
+ # Attempt to enable urllib3's SNI support, if possible
+ try:
+-    from requests.packages.urllib3.contrib import pyopenssl
++    from urllib3.contrib import pyopenssl
+     pyopenssl.inject_into_urllib3()
+ except ImportError:
+     pass
+diff -uNr requests/models.py requests.new/models.py
+--- requests/models.py	2013-05-25 18:47:00.000000000 +0200
++++ requests.new/models.py	2013-06-26 22:47:26.743326218 +0200
+@@ -17,8 +17,8 @@
+ 
+ from .auth import HTTPBasicAuth
+ from .cookies import cookiejar_from_dict, get_cookie_header
+-from .packages.urllib3.filepost import encode_multipart_formdata
+-from .packages.urllib3.util import parse_url
++from urllib3.filepost import encode_multipart_formdata
++from urllib3.util import parse_url
+ from .exceptions import HTTPError, RequestException, MissingSchema, InvalidURL
+ from .utils import (
+     guess_filename, get_auth_from_url, requote_uri,
