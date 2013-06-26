@@ -1,8 +1,3 @@
-# TODO
-# - bundled external libs? packages/ contains:
-#   charade/
-#   urllib3/
-#
 # Conditional build:
 %bcond_without  python2         # build python 2 module
 %bcond_without  python3         # build python 3 module
@@ -12,21 +7,30 @@ Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
 Version:	1.2.3
-Release:	0.2
+Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
 # Source0-md5:	adbd3f18445f7fe5e77f65c502e264fb
 URL:		http://python-requests.org
+Patch0:		system-charade-and-urllib3.patch
+Patch1:		system-cert.patch
 %if %{with python2}
+BuildRequires:	python-charade
 BuildRequires:	python-modules >= 1:2.6
+BuildRequires:	python-urllib3
 %endif
 %if %{with python3}
+BuildRequires:	python3-charade
 BuildRequires:	python3-modules >= 3.2
+BuildRequires:	python3-urllib3
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
+Requires:	ca-certificates
+Requires:	python-charade
 Requires:	python-modules >= 1:2.6
+Requires:	python-urllib3
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -53,7 +57,10 @@ najprostszych zadań. Nie powinno tak być. Nie w Pythonie.
 Summary:	HTTP library, written in Python, for human beings
 Summary(pl.UTF-8):	Biblioteka HTTP library napisana w Pythonie dla ludzi
 Group:		Development/Languages/Python
+Requires:	ca-certificates
+Requires:	python3-charade
 Requires:	python3-modules >= 3.2
+Requires:	python3-urllib3
 
 %description -n python3-requests
 Requests is a HTTP library, written in Python, for human beings.
@@ -76,6 +83,8 @@ najprostszych zadań. Nie powinno tak być. Nie w Pythonie.
 
 %prep
 %setup -q -n %{module}-%{version}
+%patch0 -p0
+%patch1 -p1
 
 %build
 %if %{with python2}
@@ -96,8 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 	--skip-build \
 	--optimize=2 \
 	--root=$RPM_BUILD_ROOT
-%py_ocomp $RPM_BUILD_ROOT%%{py_sitescriptdir}
-%py_comp $RPM_BUILD_ROOT%%{py_sitescriptdir}
+%py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
+%py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_postclean
 %endif
 
@@ -109,6 +118,8 @@ rm -rf $RPM_BUILD_ROOT
 	--optimize=2 \
 	--root=$RPM_BUILD_ROOT
 %endif
+
+%{__rm} -rf $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/{cacert.pem,packages}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
