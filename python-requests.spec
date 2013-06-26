@@ -1,36 +1,37 @@
 # TODO
 # - bundled external libs? packages/ contains:
-#   chardet/
-#   chardet2/
-#   oauthlib/
+#   charade/
+#   urllib3/
 #
 # Conditional build:
-%bcond_without	doc	# HTML documentation build
+%bcond_without  python2         # build python 2 module
+%bcond_without  python3         # build python 3 module
 #
 %define 	module	requests
 Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
-Version:	1.1.0
-Release:	0.1
-License:	ISC
+Version:	1.2.3
+Release:	0.2
+License:	Apache2
 Group:		Development/Languages/Python
-Source0:	https://github.com/kennethreitz/requests/tarball/v%{version}/%{module}-%{version}.tar.gz
-# Source0-md5:	89b4958831c4c3276ffe5d21ed53dec8
-URL:		https://github.com/kennethreitz/requests
-BuildRequires:	python >= 1:2.6
-BuildRequires:	python3 >= 3.2
+Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
+# Source0-md5:	adbd3f18445f7fe5e77f65c502e264fb
+URL:		http://python-requests.org
+%if %{with python2}
+BuildRequires:	python-modules >= 1:2.6
+%endif
+%if %{with python3}
+BuildRequires:	python3-modules >= 3.2
+%endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
-BuildRequires:	sed >= 4.0
-%{?with_doc:BuildRequires:	sphinx-pdg >= 1.0}
-Requires:	python-modules
+Requires:	python-modules >= 1:2.6
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Requests is an ISC Licensed HTTP library, written in Python, for human
-beings.
+Requests is a HTTP library, written in Python, for human beings.
 
 Most existing Python modules for sending HTTP requests are extremely
 verbose and cumbersome. Python's builtin urllib2 module provides most
@@ -40,8 +41,7 @@ to perform the simplest of tasks. Things shouldn't be this way. Not in
 Python.
 
 %description -l pl.UTF-8
-Requests to napisana w Pythonie biblioteka HTTP dla ludzi, wydana na
-licencji ISC.
+Requests to napisana w Pythonie biblioteka HTTP dla ludzi.
 
 Większość istniejących modułów Pythona do wysyłania żądań HTTP jest
 zbyt gadatliwa i nieporęczna. Wbudowany w Pythona moduł urllib2
@@ -53,10 +53,10 @@ najprostszych zadań. Nie powinno tak być. Nie w Pythonie.
 Summary:	HTTP library, written in Python, for human beings
 Summary(pl.UTF-8):	Biblioteka HTTP library napisana w Pythonie dla ludzi
 Group:		Development/Languages/Python
+Requires:	python3-modules >= 3.2
 
 %description -n python3-requests
-Requests is an ISC Licensed HTTP library, written in Python, for human
-beings.
+Requests is a HTTP library, written in Python, for human beings.
 
 Most existing Python modules for sending HTTP requests are extremely
 verbose and cumbersome. Python's builtin urllib2 module provides most
@@ -66,64 +66,67 @@ to perform the simplest of tasks. Things shouldn't be this way. Not in
 Python.
 
 %description -n python3-requests -l pl.UTF-8
-Requests is an ISC Licensed HTTP library, written in Python, for human
-beings.
+Requests to napisana w Pythonie biblioteka HTTP dla ludzi.
 
-Most existing Python modules for sending HTTP requests are extremely
-verbose and cumbersome. Python's builtin urllib2 module provides most
-of the HTTP capabilities you should need, but the API is thoroughly
-broken. It requires an enormous amount of work (even method overrides)
-to perform the simplest of tasks. Things shouldn't be this way. Not in
-Python.
+Większość istniejących modułów Pythona do wysyłania żądań HTTP jest
+zbyt gadatliwa i nieporęczna. Wbudowany w Pythona moduł urllib2
+zapewnia większość wymaganych możliwości HTTP, ale API jest kiepskie -
+wymaga dużych nakładów pracy (nawet nadpisań metod) do wykonania
+najprostszych zadań. Nie powinno tak być. Nie w Pythonie.
 
 %prep
-# kennethreitz-requests-1a7c91f
-%setup -q -n kennethreitz-%{module}-1a7c91f
-
-# avoid "distutils.errors.DistutilsByteCompileError: byte-compiling is disabled."
-%{__sed} -i -e '/PYTHONDONTWRITEBYTECODE/d' setup.py
+%setup -q -n %{module}-%{version}
 
 %build
-ver=$(%{__python} -c "import requests; print requests.__version__")
-test "$ver" = %{version}
+%if %{with python2}
+%{__python} setup.py build -b py2
+%endif
 
-mkdir py2-egg py3-egg
-%{__python} setup.py build --build-base py2
-%{__python3} setup.py build --build-base py3
-
-%if %{with doc}
-%{__make} -C docs html
+%if %{with python3}
+%{__python3} setup.py build -b py3
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%if %{with python2}
 %{__python} setup.py \
-	build --build-base py2 \
-        install \
+	build -b py2 \
+	install \
 	--skip-build \
 	--optimize=2 \
 	--root=$RPM_BUILD_ROOT
-
-%{__python3} setup.py  \
-	build --build-base py3 \
-        install \
-        --skip-build \
-        --optimize=2 \
-        --root=$RPM_BUILD_ROOT
-
+%py_ocomp $RPM_BUILD_ROOT%%{py_sitescriptdir}
+%py_comp $RPM_BUILD_ROOT%%{py_sitescriptdir}
 %py_postclean
+%endif
+
+%if %{with python3}
+%{__python3} setup.py  \
+	build -b py3 \
+	install \
+	--skip-build \
+	--optimize=2 \
+	--root=$RPM_BUILD_ROOT
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS.rst LICENSE README.rst %{?with_doc:docs/_build/html}
+%doc HISTORY.rst README.rst
 %{py_sitescriptdir}/%{module}
+%if "%{py_ver}" > "2.4"
 %{py_sitescriptdir}/%{module}-%{version}-py*.egg-info
+%endif
+%endif
 
+%if %{with python3}
 %files -n python3-requests
 %defattr(644,root,root,755)
-%doc AUTHORS.rst LICENSE README.rst %{?with_doc:docs/_build/html}
+%doc HISTORY.rst README.rst
 %{py3_sitescriptdir}/%{module}
 %{py3_sitescriptdir}/%{module}-%{version}-py*.egg-info
+%endif
