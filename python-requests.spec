@@ -6,12 +6,12 @@
 Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
-Version:	1.2.3
+Version:	2.0.1
 Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	adbd3f18445f7fe5e77f65c502e264fb
+# Source0-md5:	38e61c2856d2ba2782286730241975e6
 URL:		http://python-requests.org
 Patch0:		system-charade-and-urllib3.patch
 Patch1:		system-cert.patch
@@ -83,7 +83,7 @@ najprostszych zadań. Nie powinno tak być. Nie w Pythonie.
 
 %prep
 %setup -q -n %{module}-%{version}
-%patch0 -p0
+%patch0 -p1
 %patch1 -p1
 
 %build
