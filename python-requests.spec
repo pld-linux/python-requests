@@ -6,12 +6,12 @@
 Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
-Version:	2.0.1
+Version:	2.3.0
 Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	38e61c2856d2ba2782286730241975e6
+# Source0-md5:	7449ffdc8ec9ac37bbcd286003c80f00
 URL:		http://python-requests.org
 Patch0:		system-charade-and-urllib3.patch
 Patch1:		system-cert.patch

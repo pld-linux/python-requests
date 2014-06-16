@@ -1,6 +1,6 @@
-diff -uNr requests-2.0.1.old/requests/adapters.py requests-2.0.1/requests/adapters.py
---- requests-2.0.1.old/requests/adapters.py	2013-10-17 07:47:39.000000000 +0200
-+++ requests-2.0.1/requests/adapters.py	2013-10-27 16:24:10.774338738 +0100
+diff -urN requests-2.3.0.org/requests/adapters.py requests-2.3.0/requests/adapters.py
+--- requests-2.3.0.org/requests/adapters.py	2014-05-16 19:44:21.000000000 +0200
++++ requests-2.3.0/requests/adapters.py	2014-06-16 22:42:34.347879580 +0200
 @@ -11,18 +11,18 @@
  import socket
  
@@ -13,7 +13,7 @@ diff -uNr requests-2.0.1.old/requests/adapters.py requests-2.0.1/requests/adapte
 +from urllib3.util import Timeout as TimeoutSauce
  from .compat import urlparse, basestring, urldefrag, unquote
  from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,
-                     except_on_missing_scheme, get_auth_from_url)
+                     prepend_scheme_if_needed, get_auth_from_url)
  from .structures import CaseInsensitiveDict
 -from .packages.urllib3.exceptions import MaxRetryError
 -from .packages.urllib3.exceptions import TimeoutError
@@ -28,14 +28,14 @@ diff -uNr requests-2.0.1.old/requests/adapters.py requests-2.0.1/requests/adapte
  from .cookies import extract_cookies_to_jar
  from .exceptions import ConnectionError, Timeout, SSLError, ProxyError
  from .auth import _basic_auth_str
-diff -uNr requests-2.0.1.old/requests/compat.py requests-2.0.1/requests/compat.py
---- requests-2.0.1.old/requests/compat.py	2013-09-24 19:57:07.000000000 +0200
-+++ requests-2.0.1/requests/compat.py	2013-10-27 16:27:43.780795495 +0100
+diff -urN requests-2.3.0.org/requests/compat.py requests-2.3.0/requests/compat.py
+--- requests-2.3.0.org/requests/compat.py	2014-01-24 21:37:17.000000000 +0100
++++ requests-2.3.0/requests/compat.py	2014-06-16 22:45:55.708024685 +0200
 @@ -4,7 +4,7 @@
  pythoncompat
  """
  
--from .packages import charade as chardet
+-from .packages import chardet
 +import charade as chardet
  
  import sys
@@ -49,9 +49,21 @@ diff -uNr requests-2.0.1.old/requests/compat.py requests-2.0.1/requests/compat.p
      from httplib import IncompleteRead
  
      builtin_str = str
-diff -uNr requests-2.0.1.old/requests/__init__.py requests-2.0.1/requests/__init__.py
---- requests-2.0.1.old/requests/__init__.py	2013-10-24 16:29:28.000000000 +0200
-+++ requests-2.0.1/requests/__init__.py	2013-10-27 16:23:41.876333489 +0100
+diff -urN requests-2.3.0.org/requests/exceptions.py requests-2.3.0/requests/exceptions.py
+--- requests-2.3.0.org/requests/exceptions.py	2014-03-24 16:39:20.000000000 +0100
++++ requests-2.3.0/requests/exceptions.py	2014-06-16 22:42:34.347879580 +0200
+@@ -7,7 +7,7 @@
+ This module contains the set of Requests' exceptions.
+ 
+ """
+-from .packages.urllib3.exceptions import HTTPError as BaseHTTPError
++from urllib3.exceptions import HTTPError as BaseHTTPError
+ 
+ 
+ class RequestException(IOError):
+diff -urN requests-2.3.0.org/requests/__init__.py requests-2.3.0/requests/__init__.py
+--- requests-2.3.0.org/requests/__init__.py	2014-05-16 19:55:34.000000000 +0200
++++ requests-2.3.0/requests/__init__.py	2014-06-16 22:42:34.351213026 +0200
 @@ -50,7 +50,7 @@
  
  # Attempt to enable urllib3's SNI support, if possible
@@ -61,36 +73,39 @@ diff -uNr requests-2.0.1.old/requests/__init__.py requests-2.0.1/requests/__init
      pyopenssl.inject_into_urllib3()
  except ImportError:
      pass
-diff -uNr requests-2.0.1.old/requests/models.py requests-2.0.1/requests/models.py
---- requests-2.0.1.old/requests/models.py	2013-10-24 14:08:41.000000000 +0200
-+++ requests-2.0.1/requests/models.py	2013-10-27 16:25:04.556830261 +0100
-@@ -17,9 +17,9 @@
+diff -urN requests-2.3.0.org/requests/models.py requests-2.3.0/requests/models.py
+--- requests-2.3.0.org/requests/models.py	2014-05-12 21:08:50.000000000 +0200
++++ requests-2.3.0/requests/models.py	2014-06-16 22:42:34.351213026 +0200
+@@ -16,10 +16,10 @@
  
  from .auth import HTTPBasicAuth
  from .cookies import cookiejar_from_dict, get_cookie_header
 -from .packages.urllib3.fields import RequestField
 -from .packages.urllib3.filepost import encode_multipart_formdata
 -from .packages.urllib3.util import parse_url
+-from .packages.urllib3.exceptions import DecodeError
 +from urllib3.fields import RequestField
 +from urllib3.filepost import encode_multipart_formdata
 +from urllib3.util import parse_url
++from urllib3.exceptions import DecodeError
  from .exceptions import (
      HTTPError, RequestException, MissingSchema, InvalidURL,
-     ChunkedEncodingError)
-diff -uNr requests-2.0.1.old/setup.py requests-2.0.1/setup.py
---- requests-2.0.1.old/setup.py	2013-09-24 19:57:07.000000000 +0200
-+++ requests-2.0.1/setup.py	2013-10-27 16:22:57.664285747 +0100
-@@ -15,13 +15,7 @@
+     ChunkedEncodingError, ContentDecodingError)
+diff -urN requests-2.3.0.org/setup.py requests-2.3.0/setup.py
+--- requests-2.3.0.org/setup.py	2014-05-12 21:08:50.000000000 +0200
++++ requests-2.3.0/setup.py	2014-06-16 22:43:05.005583540 +0200
+@@ -15,14 +15,7 @@
      sys.exit()
  
  packages = [
 -    'requests',
 -    'requests.packages',
--    'requests.packages.charade',
+-    'requests.packages.chardet',
 -    'requests.packages.urllib3',
 -    'requests.packages.urllib3.packages',
 -    'requests.packages.urllib3.contrib',
--    'requests.packages.urllib3.packages.ssl_match_hostname'
+-    'requests.packages.urllib3.util',
+-    'requests.packages.urllib3.packages.ssl_match_hostname',
 +    'requests'
  ]
  
