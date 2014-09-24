@@ -1,14 +1,13 @@
-diff -uNr requests-1.2.3/requests/certs.py requests-1.2.3.new/requests/certs.py
---- requests-1.2.3/requests/certs.py	2013-01-31 14:18:16.000000000 +0100
-+++ requests-1.2.3.new/requests/certs.py	2013-06-26 22:58:37.039694911 +0200
-@@ -17,8 +17,8 @@
- 
- def where():
-     """Return the preferred certificate bundle."""
--    # vendored bundle inside Requests
--    return os.path.join(os.path.dirname(__file__), 'cacert.pem')
-+    # system certificates from ca-certificates package
-+    return "/etc/certs/ca-certificates.crt"
+--- requests-2.4.1/requests/certs.py~	2014-08-19 18:52:58.000000000 +0200
++++ requests-2.4.1/requests/certs.py	2014-09-24 15:15:55.773227329 +0200
+@@ -18,8 +18,8 @@
+ except ImportError:
+     def where():
+         """Return the preferred certificate bundle."""
+-        # vendored bundle inside Requests
+-        return os.path.join(os.path.dirname(__file__), 'cacert.pem')
++        # system certificates from ca-certificates package
++        return "/etc/certs/ca-certificates.crt"
  
  if __name__ == '__main__':
      print(where())

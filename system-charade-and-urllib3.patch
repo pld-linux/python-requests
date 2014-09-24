@@ -1,36 +1,42 @@
-diff -urN requests-2.3.0.org/requests/adapters.py requests-2.3.0/requests/adapters.py
---- requests-2.3.0.org/requests/adapters.py	2014-05-16 19:44:21.000000000 +0200
-+++ requests-2.3.0/requests/adapters.py	2014-06-16 22:42:34.347879580 +0200
-@@ -11,18 +11,18 @@
+diff -urN requests-2.4.1.org/requests/adapters.py requests-2.4.1/requests/adapters.py
+--- requests-2.4.1.org/requests/adapters.py	2014-09-09 18:31:17.000000000 +0200
++++ requests-2.4.1/requests/adapters.py	2014-09-24 15:13:26.999475101 +0200
+@@ -11,21 +11,21 @@
  import socket
  
  from .models import Response
+-from .packages.urllib3 import Retry
 -from .packages.urllib3.poolmanager import PoolManager, proxy_from_url
 -from .packages.urllib3.response import HTTPResponse
 -from .packages.urllib3.util import Timeout as TimeoutSauce
++from urllib3 import Retry
 +from urllib3.poolmanager import PoolManager, proxy_from_url
 +from urllib3.response import HTTPResponse
 +from urllib3.util import Timeout as TimeoutSauce
- from .compat import urlparse, basestring, urldefrag, unquote
+ from .compat import urlparse, basestring, urldefrag
  from .utils import (DEFAULT_CA_BUNDLE_PATH, get_encoding_from_headers,
                      prepend_scheme_if_needed, get_auth_from_url)
  from .structures import CaseInsensitiveDict
--from .packages.urllib3.exceptions import MaxRetryError
--from .packages.urllib3.exceptions import TimeoutError
--from .packages.urllib3.exceptions import SSLError as _SSLError
+-from .packages.urllib3.exceptions import ConnectTimeoutError
 -from .packages.urllib3.exceptions import HTTPError as _HTTPError
+-from .packages.urllib3.exceptions import MaxRetryError
 -from .packages.urllib3.exceptions import ProxyError as _ProxyError
-+from urllib3.exceptions import MaxRetryError
-+from urllib3.exceptions import TimeoutError
-+from urllib3.exceptions import SSLError as _SSLError
+-from .packages.urllib3.exceptions import ProtocolError
+-from .packages.urllib3.exceptions import ReadTimeoutError
+-from .packages.urllib3.exceptions import SSLError as _SSLError
++from urllib3.exceptions import ConnectTimeoutError
 +from urllib3.exceptions import HTTPError as _HTTPError
++from urllib3.exceptions import MaxRetryError
 +from urllib3.exceptions import ProxyError as _ProxyError
++from urllib3.exceptions import ProtocolError
++from urllib3.exceptions import ReadTimeoutError
++from urllib3.exceptions import SSLError as _SSLError
  from .cookies import extract_cookies_to_jar
- from .exceptions import ConnectionError, Timeout, SSLError, ProxyError
- from .auth import _basic_auth_str
-diff -urN requests-2.3.0.org/requests/compat.py requests-2.3.0/requests/compat.py
---- requests-2.3.0.org/requests/compat.py	2014-01-24 21:37:17.000000000 +0100
-+++ requests-2.3.0/requests/compat.py	2014-06-16 22:45:55.708024685 +0200
+ from .exceptions import (ConnectionError, ConnectTimeout, ReadTimeout, SSLError,
+                          ProxyError)
+diff -urN requests-2.4.1.org/requests/compat.py requests-2.4.1/requests/compat.py
+--- requests-2.4.1.org/requests/compat.py	2014-08-19 18:52:58.000000000 +0200
++++ requests-2.4.1/requests/compat.py	2014-09-24 15:14:24.687597504 +0200
 @@ -4,7 +4,7 @@
  pythoncompat
  """
@@ -40,18 +46,18 @@ diff -urN requests-2.3.0.org/requests/compat.py requests-2.3.0/requests/compat.p
  
  import sys
  
-@@ -89,7 +89,7 @@
+@@ -91,7 +91,7 @@
      import cookielib
      from Cookie import Morsel
      from StringIO import StringIO
 -    from .packages.urllib3.packages.ordered_dict import OrderedDict
 +    from urllib3.packages.ordered_dict import OrderedDict
-     from httplib import IncompleteRead
  
      builtin_str = str
-diff -urN requests-2.3.0.org/requests/exceptions.py requests-2.3.0/requests/exceptions.py
---- requests-2.3.0.org/requests/exceptions.py	2014-03-24 16:39:20.000000000 +0100
-+++ requests-2.3.0/requests/exceptions.py	2014-06-16 22:42:34.347879580 +0200
+     bytes = str
+diff -urN requests-2.4.1.org/requests/exceptions.py requests-2.4.1/requests/exceptions.py
+--- requests-2.4.1.org/requests/exceptions.py	2014-09-09 18:31:17.000000000 +0200
++++ requests-2.4.1/requests/exceptions.py	2014-09-24 15:13:27.002808518 +0200
 @@ -7,7 +7,7 @@
  This module contains the set of Requests' exceptions.
  
@@ -61,9 +67,9 @@ diff -urN requests-2.3.0.org/requests/exceptions.py requests-2.3.0/requests/exce
  
  
  class RequestException(IOError):
-diff -urN requests-2.3.0.org/requests/__init__.py requests-2.3.0/requests/__init__.py
---- requests-2.3.0.org/requests/__init__.py	2014-05-16 19:55:34.000000000 +0200
-+++ requests-2.3.0/requests/__init__.py	2014-06-16 22:42:34.351213026 +0200
+diff -urN requests-2.4.1.org/requests/__init__.py requests-2.4.1/requests/__init__.py
+--- requests-2.4.1.org/requests/__init__.py	2014-09-09 18:34:25.000000000 +0200
++++ requests-2.4.1/requests/__init__.py	2014-09-24 15:13:27.002808518 +0200
 @@ -50,7 +50,7 @@
  
  # Attempt to enable urllib3's SNI support, if possible
@@ -73,9 +79,9 @@ diff -urN requests-2.3.0.org/requests/__init__.py requests-2.3.0/requests/__init
      pyopenssl.inject_into_urllib3()
  except ImportError:
      pass
-diff -urN requests-2.3.0.org/requests/models.py requests-2.3.0/requests/models.py
---- requests-2.3.0.org/requests/models.py	2014-05-12 21:08:50.000000000 +0200
-+++ requests-2.3.0/requests/models.py	2014-06-16 22:42:34.351213026 +0200
+diff -urN requests-2.4.1.org/requests/models.py requests-2.4.1/requests/models.py
+--- requests-2.4.1.org/requests/models.py	2014-08-19 18:52:58.000000000 +0200
++++ requests-2.4.1/requests/models.py	2014-09-24 15:13:27.002808518 +0200
 @@ -16,10 +16,10 @@
  
  from .auth import HTTPBasicAuth
@@ -83,22 +89,21 @@ diff -urN requests-2.3.0.org/requests/models.py requests-2.3.0/requests/models.p
 -from .packages.urllib3.fields import RequestField
 -from .packages.urllib3.filepost import encode_multipart_formdata
 -from .packages.urllib3.util import parse_url
--from .packages.urllib3.exceptions import DecodeError
+-from .packages.urllib3.exceptions import (
 +from urllib3.fields import RequestField
 +from urllib3.filepost import encode_multipart_formdata
 +from urllib3.util import parse_url
-+from urllib3.exceptions import DecodeError
++from urllib3.exceptions import (
+     DecodeError, ReadTimeoutError, ProtocolError)
  from .exceptions import (
      HTTPError, RequestException, MissingSchema, InvalidURL,
-     ChunkedEncodingError, ContentDecodingError)
-diff -urN requests-2.3.0.org/setup.py requests-2.3.0/setup.py
---- requests-2.3.0.org/setup.py	2014-05-12 21:08:50.000000000 +0200
-+++ requests-2.3.0/setup.py	2014-06-16 22:43:05.005583540 +0200
-@@ -15,14 +15,7 @@
-     sys.exit()
+diff -urN requests-2.4.1.org/setup.py requests-2.4.1/setup.py
+--- requests-2.4.1.org/setup.py	2014-09-09 18:31:17.000000000 +0200
++++ requests-2.4.1/setup.py	2014-09-24 15:14:43.654742562 +0200
+@@ -18,13 +18,6 @@
  
  packages = [
--    'requests',
+     'requests',
 -    'requests.packages',
 -    'requests.packages.chardet',
 -    'requests.packages.urllib3',
@@ -106,7 +111,6 @@ diff -urN requests-2.3.0.org/setup.py requests-2.3.0/setup.py
 -    'requests.packages.urllib3.contrib',
 -    'requests.packages.urllib3.util',
 -    'requests.packages.urllib3.packages.ssl_match_hostname',
-+    'requests'
  ]
  
  requires = []

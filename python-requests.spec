@@ -6,31 +6,31 @@
 Summary:	HTTP library for Python
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona
 Name:		python-%{module}
-Version:	2.3.0
+Version:	2.4.1
 Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	7449ffdc8ec9ac37bbcd286003c80f00
+# Source0-md5:	931461f761c70708c46ea65b7889da58
 URL:		http://python-requests.org
 Patch0:		system-charade-and-urllib3.patch
 Patch1:		system-cert.patch
 %if %{with python2}
 BuildRequires:	python-charade
 BuildRequires:	python-modules >= 1:2.6
-BuildRequires:	python-urllib3
+BuildRequires:	python-urllib3 >= 1.9.1
 %endif
 %if %{with python3}
 BuildRequires:	python3-charade
 BuildRequires:	python3-modules >= 3.2
-BuildRequires:	python3-urllib3
+BuildRequires:	python3-urllib3 >= 1.9.1
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
 Requires:	ca-certificates
 Requires:	python-charade
 Requires:	python-modules >= 1:2.6
-Requires:	python-urllib3
+Requires:	python-urllib3 >= 1.9.1
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -60,7 +60,7 @@ Group:		Development/Languages/Python
 Requires:	ca-certificates
 Requires:	python3-charade
 Requires:	python3-modules >= 3.2
-Requires:	python3-urllib3
+Requires:	python3-urllib3 >= 1.9.1
 
 %description -n python3-requests
 Requests is a HTTP library, written in Python, for human beings.
