@@ -8,7 +8,7 @@ Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
 Version:	2.4.1
-Release:	1
+Release:	2
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
