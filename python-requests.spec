@@ -7,13 +7,16 @@
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.4.1
-Release:	2
+Version:	2.4.3
+Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	931461f761c70708c46ea65b7889da58
+# Source0-md5:	02214b3a179e445545de4b7a98d3dd17
 URL:		http://python-requests.org
+# find . -name '*.py' -exec sed -i -e 's#\.packages\.urllib3#urllib3#g' "{}" ";"
+# find . -name '*.py' -exec sed -i -e 's#from \.packages import chardet#import charade as chardet#g' "{}" ";"
+# + manual removal from setup.py
 Patch0:		system-charade-and-urllib3.patch
 Patch1:		system-cert.patch
 %if %{with python2}
