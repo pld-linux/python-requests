@@ -8,7 +8,7 @@ Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
 Version:	2.4.3
-Release:	1
+Release:	2
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
@@ -35,6 +35,10 @@ Requires:	ca-certificates
 Requires:	python-charade
 Requires:	python-modules >= 1:2.6
 Requires:	python-urllib3 >= 1.9.1
+# for python2 only to get SNI working. python3 doesn't need this
+Requires:	python-ndg-httpsclient
+Requires:	python-pyasn1
+Requires:	python-pyOpenSSL
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
