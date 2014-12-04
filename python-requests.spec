@@ -1,40 +1,49 @@
 #
 # Conditional build:
+%bcond_without	tests	# do not perform "make test"
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
+%bcond_without	bundled # Bundle Libraries
 #
 %define 	module	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.4.3
-Release:	2
+Version:	2.5.0
+Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	02214b3a179e445545de4b7a98d3dd17
+# Source0-md5:	b8bf3ddca75e7ecf1b6776da1e6e3385
 URL:		http://python-requests.org
+# find . -name '*.py' -exec sed -i -e 's#requests\.packages\.urllib3#urllib3#g' "{}" ";"
 # find . -name '*.py' -exec sed -i -e 's#\.packages\.urllib3#urllib3#g' "{}" ";"
 # find . -name '*.py' -exec sed -i -e 's#from \.packages import chardet#import charade as chardet#g' "{}" ";"
 # + manual removal from setup.py
 Patch0:		system-charade-and-urllib3.patch
 Patch1:		system-cert.patch
 %if %{with python2}
-BuildRequires:	python-charade
 BuildRequires:	python-modules >= 1:2.6
+%if %{without bundled}
+BuildRequires:	python-charade
 BuildRequires:	python-urllib3 >= 1.9.1
 %endif
+%endif
 %if %{with python3}
-BuildRequires:	python3-charade
 BuildRequires:	python3-modules >= 1:3.2
+%if %{without bundled}
+BuildRequires:	python3-charade
 BuildRequires:	python3-urllib3 >= 1.9.1
+%endif
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
 Requires:	ca-certificates
-Requires:	python-charade
 Requires:	python-modules >= 1:2.6
+%if %{without bundled}
+Requires:	python-charade
 Requires:	python-urllib3 >= 1.9.1
+%endif
 # for python2 only to get SNI working. python3 doesn't need this
 Requires:	python-ndg-httpsclient
 Requires:	python-pyasn1
@@ -70,9 +79,11 @@ Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
 Requires:	ca-certificates
-Requires:	python3-charade
 Requires:	python3-modules >= 1:3.2
+%if %{without bundled}
+Requires:	python3-charade
 Requires:	python3-urllib3 >= 1.9.1
+%endif
 
 %description -n python3-requests
 Requests is a HTTP library, written in Python, for human beings.
@@ -99,16 +110,16 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 
 %prep
 %setup -q -n %{module}-%{version}
-%patch0 -p1
+%{!?with_bundled:%patch0 -p1}
 %patch1 -p1
 
 %build
 %if %{with python2}
-%{__python} setup.py build -b py2
+%{__python} setup.py build -b py2 %{?with_tests:test}
 %endif
 
 %if %{with python3}
-%{__python3} setup.py build -b py3
+%{__python3} setup.py build -b py3 %{?with_tests:test}
 %endif
 
 %install
@@ -135,7 +146,8 @@ rm -rf $RPM_BUILD_ROOT
 	--root=$RPM_BUILD_ROOT
 %endif
 
-%{__rm} -rf $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/{cacert.pem,packages}
+%{__rm} -rf $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/cacert.pem
+%{!?with_bundled:%{__rm} -rf $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/packages}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

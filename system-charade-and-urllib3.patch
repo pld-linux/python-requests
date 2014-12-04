@@ -1,7 +1,7 @@
-diff -urN requests-2.4.3.org/requests/adapters.py requests-2.4.3/requests/adapters.py
---- requests-2.4.3.org/requests/adapters.py	2014-10-06 11:40:10.000000000 +0200
-+++ requests-2.4.3/requests/adapters.py	2014-10-21 17:40:54.823464764 +0200
-@@ -11,21 +11,21 @@
+diff -urN requests-2.5.0.org/requests/adapters.py requests-2.5.0/requests/adapters.py
+--- requests-2.5.0.org/requests/adapters.py	2014-12-01 22:02:39.000000000 +0100
++++ requests-2.5.0/requests/adapters.py	2014-12-04 11:09:50.937837828 +0100
+@@ -11,22 +11,22 @@
  import socket
  
  from .models import Response
@@ -24,6 +24,7 @@ diff -urN requests-2.4.3.org/requests/adapters.py requests-2.4.3/requests/adapte
 -from .packages.urllib3.exceptions import ProtocolError
 -from .packages.urllib3.exceptions import ReadTimeoutError
 -from .packages.urllib3.exceptions import SSLError as _SSLError
+-from .packages.urllib3.exceptions import ResponseError
 +from urllib3.exceptions import ConnectTimeoutError
 +from urllib3.exceptions import HTTPError as _HTTPError
 +from urllib3.exceptions import MaxRetryError
@@ -31,12 +32,13 @@ diff -urN requests-2.4.3.org/requests/adapters.py requests-2.4.3/requests/adapte
 +from urllib3.exceptions import ProtocolError
 +from urllib3.exceptions import ReadTimeoutError
 +from urllib3.exceptions import SSLError as _SSLError
++from urllib3.exceptions import ResponseError
  from .cookies import extract_cookies_to_jar
  from .exceptions import (ConnectionError, ConnectTimeout, ReadTimeout, SSLError,
-                          ProxyError)
-diff -urN requests-2.4.3.org/requests/compat.py requests-2.4.3/requests/compat.py
---- requests-2.4.3.org/requests/compat.py	2014-08-19 18:52:58.000000000 +0200
-+++ requests-2.4.3/requests/compat.py	2014-10-21 17:40:54.830131661 +0200
+                          ProxyError, RetryError)
+diff -urN requests-2.5.0.org/requests/compat.py requests-2.5.0/requests/compat.py
+--- requests-2.5.0.org/requests/compat.py	2014-08-29 21:37:47.000000000 +0200
++++ requests-2.5.0/requests/compat.py	2014-12-04 11:09:50.944504630 +0100
 @@ -4,7 +4,7 @@
  pythoncompat
  """
@@ -55,9 +57,9 @@ diff -urN requests-2.4.3.org/requests/compat.py requests-2.4.3/requests/compat.p
  
      builtin_str = str
      bytes = str
-diff -urN requests-2.4.3.org/requests/exceptions.py requests-2.4.3/requests/exceptions.py
---- requests-2.4.3.org/requests/exceptions.py	2014-10-05 18:53:35.000000000 +0200
-+++ requests-2.4.3/requests/exceptions.py	2014-10-21 17:40:54.836798554 +0200
+diff -urN requests-2.5.0.org/requests/exceptions.py requests-2.5.0/requests/exceptions.py
+--- requests-2.5.0.org/requests/exceptions.py	2014-12-01 22:02:39.000000000 +0100
++++ requests-2.5.0/requests/exceptions.py	2014-12-04 11:09:50.947838039 +0100
 @@ -7,7 +7,7 @@
  This module contains the set of Requests' exceptions.
  
@@ -67,9 +69,9 @@ diff -urN requests-2.4.3.org/requests/exceptions.py requests-2.4.3/requests/exce
  
  
  class RequestException(IOError):
-diff -urN requests-2.4.3.org/requests/__init__.py requests-2.4.3/requests/__init__.py
---- requests-2.4.3.org/requests/__init__.py	2014-10-06 11:44:17.000000000 +0200
-+++ requests-2.4.3/requests/__init__.py	2014-10-21 17:40:54.820131316 +0200
+diff -urN requests-2.5.0.org/requests/__init__.py requests-2.5.0/requests/__init__.py
+--- requests-2.5.0.org/requests/__init__.py	2014-12-02 00:22:46.000000000 +0100
++++ requests-2.5.0/requests/__init__.py	2014-12-04 11:09:50.934504432 +0100
 @@ -50,7 +50,7 @@
  
  # Attempt to enable urllib3's SNI support, if possible
@@ -79,9 +81,9 @@ diff -urN requests-2.4.3.org/requests/__init__.py requests-2.4.3/requests/__init
      pyopenssl.inject_into_urllib3()
  except ImportError:
      pass
-diff -urN requests-2.4.3.org/requests/models.py requests-2.4.3/requests/models.py
---- requests-2.4.3.org/requests/models.py	2014-10-06 11:40:10.000000000 +0200
-+++ requests-2.4.3/requests/models.py	2014-10-21 17:40:54.840132000 +0200
+diff -urN requests-2.5.0.org/requests/models.py requests-2.5.0/requests/models.py
+--- requests-2.5.0.org/requests/models.py	2014-11-16 18:39:53.000000000 +0100
++++ requests-2.5.0/requests/models.py	2014-12-04 11:09:50.951171470 +0100
 @@ -16,10 +16,10 @@
  
  from .auth import HTTPBasicAuth
@@ -97,9 +99,21 @@ diff -urN requests-2.4.3.org/requests/models.py requests-2.4.3/requests/models.p
      DecodeError, ReadTimeoutError, ProtocolError)
  from .exceptions import (
      HTTPError, RequestException, MissingSchema, InvalidURL, 
-diff -urN requests-2.4.3.org/setup.py requests-2.4.3/setup.py
---- requests-2.4.3.org/setup.py	2014-09-09 18:31:17.000000000 +0200
-+++ requests-2.4.3/setup.py	2014-10-21 17:41:51.558737269 +0200
+diff -urN requests-2.5.0.org/requests/sessions.py requests-2.5.0/requests/sessions.py
+--- requests-2.5.0.org/requests/sessions.py	2014-12-01 22:02:39.000000000 +0100
++++ requests-2.5.0/requests/sessions.py	2014-12-04 11:09:51.081174694 +0100
+@@ -21,7 +21,7 @@
+ from .utils import to_key_val_list, default_headers, to_native_string
+ from .exceptions import (
+     TooManyRedirects, InvalidSchema, ChunkedEncodingError, ContentDecodingError)
+-from .packages.urllib3._collections import RecentlyUsedContainer
++from urllib3._collections import RecentlyUsedContainer
+ from .structures import CaseInsensitiveDict
+ 
+ from .adapters import HTTPAdapter
+diff -urN requests-2.5.0.org/setup.py requests-2.5.0/setup.py
+--- requests-2.5.0.org/setup.py	2014-09-10 17:30:41.000000000 +0200
++++ requests-2.5.0/setup.py	2014-12-04 11:10:15.661783566 +0100
 @@ -18,13 +18,6 @@
  
  packages = [
@@ -114,3 +128,15 @@ diff -urN requests-2.4.3.org/setup.py requests-2.4.3/setup.py
  ]
  
  requires = []
+diff -urN requests-2.5.0.org/test_requests.py requests-2.5.0/test_requests.py
+--- requests-2.5.0.org/test_requests.py	2014-12-01 23:26:18.000000000 +0100
++++ requests-2.5.0/test_requests.py	2014-12-04 11:09:51.094508361 +0100
+@@ -1532,7 +1532,7 @@
+ 
+ 
+ def test_urllib3_retries():
+-    from requests.packages.urllib3.util import Retry
++    from urllib3.util import Retry
+     s = requests.Session()
+     s.mount('https://', HTTPAdapter(max_retries=Retry(
+         total=2, status_forcelist=[500]
