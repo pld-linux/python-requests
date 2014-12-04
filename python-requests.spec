@@ -28,6 +28,7 @@ BuildRequires:	python-modules >= 1:2.6
 BuildRequires:	python-charade
 BuildRequires:	python-urllib3 >= 1.9.1
 %endif
+%{?with_tests:BuildRequires:	python-pytest}
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.2
@@ -35,6 +36,7 @@ BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-charade
 BuildRequires:	python3-urllib3 >= 1.9.1
 %endif
+%{?with_tests:BuildRequires:	python3-pytest}
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
@@ -116,10 +118,12 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 %build
 %if %{with python2}
 %{__python} setup.py build -b py2 %{?with_tests:test}
+%{?with_tests:cp requirements.txt test_requests.py py2; cd py2; PYTHONPATH=$(pwd)/lib %{__python} test_requests.py; cd ..}
 %endif
 
 %if %{with python3}
 %{__python3} setup.py build -b py3 %{?with_tests:test}
+%{?with_tests:cp requirements.txt test_requests.py py3; cd py3; PYTHONPATH=$(pwd)/lib %{__python3} test_requests.py; cd ..}
 %endif
 
 %install
