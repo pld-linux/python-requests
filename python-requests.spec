@@ -22,6 +22,7 @@ URL:		http://python-requests.org
 # + manual removal from setup.py
 Patch0:		system-charade-and-urllib3.patch
 Patch1:		system-cert.patch
+Patch2:		requests-test.patch
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.6
 %if %{without bundled}
@@ -114,6 +115,7 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 %setup -q -n %{module}-%{version}
 %{!?with_bundled:%patch0 -p1}
 %patch1 -p1
+%patch2 -p1
 
 %build
 %if %{with python2}
