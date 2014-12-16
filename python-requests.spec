@@ -1,9 +1,9 @@
 #
 # Conditional build:
-%bcond_with	tests	# do not perform "make test"
+%bcond_with	tests	# perform "make test"
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
-%bcond_without	bundled # Bundle Libraries
+%bcond_with	bundled # bundled libraries
 #
 %define 	module	requests
 Summary:	HTTP library for Python 2
@@ -34,7 +34,7 @@ BuildRequires:	python-urllib3 >= 1.9.1
 BuildRequires:	python3-modules >= 1:3.2
 %if %{without bundled}
 BuildRequires:	python3-charade
-BuildRequires:	python3-urllib3 >= 1.9.1
+BuildRequires:	python3-urllib3 >= 1.10
 %endif
 %{?with_tests:BuildRequires:	python3-pytest}
 %endif
@@ -44,7 +44,7 @@ Requires:	ca-certificates
 Requires:	python-modules >= 1:2.6
 %if %{without bundled}
 Requires:	python-charade
-Requires:	python-urllib3 >= 1.9.1
+Requires:	python-urllib3 >= 1.10
 %endif
 # for python2 only to get SNI working. python3 doesn't need this
 Requires:	python-ndg-httpsclient
@@ -84,7 +84,7 @@ Requires:	ca-certificates
 Requires:	python3-modules >= 1:3.2
 %if %{without bundled}
 Requires:	python3-charade
-Requires:	python3-urllib3 >= 1.9.1
+Requires:	python3-urllib3 >= 1.10
 %endif
 
 %description -n python3-requests
@@ -150,8 +150,8 @@ rm -rf $RPM_BUILD_ROOT
 	--root=$RPM_BUILD_ROOT
 %endif
 
-%{__rm} -rf $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/cacert.pem
-%{!?with_bundled:%{__rm} -rf $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/packages}
+%{__rm} $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/cacert.pem
+%{!?with_bundled:%{__rm} -r $RPM_BUILD_ROOT{%{py_sitescriptdir},%{py3_sitescriptdir}}/%{module}/packages}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
