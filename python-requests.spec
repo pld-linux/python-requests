@@ -5,16 +5,17 @@
 %bcond_without	python3	# CPython 3.x module
 %bcond_with	bundled # bundled libraries
 #
+%define		urllib3ver	1.10.1
 %define 	module	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.5.0
+Version:	2.5.3
 Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	b8bf3ddca75e7ecf1b6776da1e6e3385
+# Source0-md5:	23bf4fcc89ea8d353eb5353bb4a475b1
 URL:		http://python-requests.org
 # find . -name '*.py' -exec sed -i -e 's#requests\.packages\.urllib3#urllib3#g' "{}" ";"
 # find . -name '*.py' -exec sed -i -e 's#\.packages\.urllib3#urllib3#g' "{}" ";"
@@ -26,7 +27,7 @@ Patch1:		system-cert.patch
 BuildRequires:	python-modules >= 1:2.6
 %if %{without bundled}
 BuildRequires:	python-charade
-BuildRequires:	python-urllib3 >= 1.9.1
+BuildRequires:	python-urllib3 >= %{urllib3ver}
 %endif
 %{?with_tests:BuildRequires:	python-pytest}
 %endif
@@ -34,7 +35,7 @@ BuildRequires:	python-urllib3 >= 1.9.1
 BuildRequires:	python3-modules >= 1:3.2
 %if %{without bundled}
 BuildRequires:	python3-charade
-BuildRequires:	python3-urllib3 >= 1.10
+BuildRequires:	python3-urllib3 >= %{urllib3ver}
 %endif
 %{?with_tests:BuildRequires:	python3-pytest}
 %endif
@@ -44,7 +45,7 @@ Requires:	ca-certificates
 Requires:	python-modules >= 1:2.6
 %if %{without bundled}
 Requires:	python-charade
-Requires:	python-urllib3 >= 1.10
+Requires:	python-urllib3 >= %{urllib3ver}
 %endif
 # for python2 only to get SNI working. python3 doesn't need this
 Requires:	python-ndg-httpsclient
@@ -84,7 +85,7 @@ Requires:	ca-certificates
 Requires:	python3-modules >= 1:3.2
 %if %{without bundled}
 Requires:	python3-charade
-Requires:	python3-urllib3 >= 1.10
+Requires:	python3-urllib3 >= %{urllib3ver}
 %endif
 
 %description -n python3-requests
