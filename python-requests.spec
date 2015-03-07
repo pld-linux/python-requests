@@ -29,7 +29,7 @@ BuildRequires:	python-modules >= 1:2.6
 BuildRequires:	python-charade
 BuildRequires:	python-urllib3 >= %{urllib3ver}
 %endif
-%{?with_tests:BuildRequires:	python-pytest}
+%{?with_tests:BuildRequires:	python-pytest >= 2.3.4}
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.2
@@ -37,7 +37,7 @@ BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-charade
 BuildRequires:	python3-urllib3 >= %{urllib3ver}
 %endif
-%{?with_tests:BuildRequires:	python3-pytest}
+%{?with_tests:BuildRequires:	python3-pytest >= 2.3.4}
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
