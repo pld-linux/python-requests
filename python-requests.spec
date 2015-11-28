@@ -118,12 +118,12 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 
 %build
 %if %{with python2}
-%{__python} setup.py build -b py2 %{?with_tests:test}
+%py_build -b py2 %{?with_tests:test}
 %{?with_tests:cp requirements.txt test_requests.py py2; cd py2; PYTHONPATH=$(pwd)/lib %{__python} test_requests.py; cd ..}
 %endif
 
 %if %{with python3}
-%{__python3} setup.py build -b py3 %{?with_tests:test}
+%py3_build -b py3 %{?with_tests:test}
 %{?with_tests:cp requirements.txt test_requests.py py3; cd py3; PYTHONPATH=$(pwd)/lib %{__python3} test_requests.py; cd ..}
 %endif
 
