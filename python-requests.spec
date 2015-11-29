@@ -40,7 +40,7 @@ BuildRequires:	python3-urllib3 >= %{urllib3ver}
 %{?with_tests:BuildRequires:	python3-pytest >= 2.3.4}
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.710
 Requires:	ca-certificates
 Requires:	python-modules >= 1:2.6
 %if %{without bundled}
