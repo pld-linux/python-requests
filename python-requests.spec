@@ -5,17 +5,17 @@
 %bcond_without	python3	# CPython 3.x module
 %bcond_without	bundled # bundled libraries
 #
-%define		urllib3ver	1.10.4
+%define		urllib3ver	1.12
 %define 	module	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.7.0
-Release:	3
+Version:	2.8.1
+Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	29b173fd5fa572ec0764d1fd7b527260
+# Source0-md5:	a27ea3d72d7822906ddce5e252d6add9
 URL:		http://python-requests.org
 # find . -name '*.py' -exec sed -i -e 's#requests\.packages\.urllib3#urllib3#g' "{}" ";"
 # find . -name '*.py' -exec sed -i -e 's#\.packages\.urllib3#urllib3#g' "{}" ";"
