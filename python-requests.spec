@@ -10,12 +10,12 @@
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.8.1
-Release:	2
+Version:	2.9.1
+Release:	1
 License:	Apache2
 Group:		Development/Languages/Python
 Source0:	https://pypi.python.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	a27ea3d72d7822906ddce5e252d6add9
+# Source0-md5:	0b7f480d19012ec52bab78292efd976d
 URL:		http://python-requests.org
 # find . -name '*.py' -exec sed -i -e 's#requests\.packages\.urllib3#urllib3#g' "{}" ";"
 # find . -name '*.py' -exec sed -i -e 's#\.packages\.urllib3#urllib3#g' "{}" ";"
