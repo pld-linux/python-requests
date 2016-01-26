@@ -5,7 +5,7 @@
 %bcond_without	python3	# CPython 3.x module
 %bcond_without	bundled # bundled libraries
 #
-%define		urllib3ver	1.12
+%define		urllib3ver	1.13
 %define 	module	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
