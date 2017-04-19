@@ -1,56 +1,63 @@
 #
 # Conditional build:
-%bcond_with	tests	# perform "make test"
+%bcond_with	tests	# test target (tests not included in dist tarball as of 2.13.0)
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
 %bcond_without	bundled # bundled libraries
 #
-%define		urllib3ver	1.13
+%define		urllib3ver	1.20
 %define 	module	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.11.1
-Release:	2
-License:	Apache2
+Version:	2.13.0
+Release:	1
+License:	Apache v2.0
 Group:		Development/Languages/Python
-Source0:	https://pypi.python.org/packages/2e/ad/e627446492cc374c284e82381215dcd9a0a87c4f6e90e9789afefe6da0ad/%{module}-%{version}.tar.gz
-# Source0-md5:	ad5f9c47b5c5dfdb28363ad7546b0763
-URL:		http://python-requests.org
-# find . -name '*.py' -exec sed -i -e 's#requests\.packages\.urllib3#urllib3#g' "{}" ";"
-# find . -name '*.py' -exec sed -i -e 's#\.packages\.urllib3#urllib3#g' "{}" ";"
-# find . -name '*.py' -exec sed -i -e 's#from \.packages import chardet#import charade as chardet#g' "{}" ";"
-# + manual removal from setup.py
-Patch0:		system-charade-and-urllib3.patch
+Source0:	https://pypi.python.org/packages/16/09/37b69de7c924d318e51ece1c4ceb679bf93be9d05973bb30c35babd596e2/%{module}-%{version}.tar.gz
+# Source0-md5:	921ec6b48f2ddafc8bb6160957baf444
+Patch0:		%{name}-remove-nested-bundling-dep.patch
 Patch1:		system-cert.patch
+URL:		http://python-requests.org/
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.6
 %if %{without bundled}
-BuildRequires:	python-charade
+BuildRequires:	python-chardet >= 2.3.0
 BuildRequires:	python-urllib3 >= %{urllib3ver}
 %endif
-%{?with_tests:BuildRequires:	python-pytest >= 2.3.4}
+%if %{with tests}
+BuildRequires:	python-pytest >= 2.8.0
+BuildRequires:	python-pytest-cov
+BuildRequires:	python-pytest-httpbin >= 0.0.7
+BuildRequires:	python-pytest-mock
+%endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.2
 %if %{without bundled}
-BuildRequires:	python3-charade
+BuildRequires:	python3-chardet >= 2.3.0
 BuildRequires:	python3-urllib3 >= %{urllib3ver}
 %endif
-%{?with_tests:BuildRequires:	python3-pytest >= 2.3.4}
+%if %{with tests}
+BuildRequires:	python3-pytest >= 2.8.0
+BuildRequires:	python3-pytest-cov
+BuildRequires:	python3-pytest-httpbin >= 0.0.7
+BuildRequires:	python3-pytest-mock
+%endif
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.713
 Requires:	ca-certificates
+Requires:	python-idna >= 2.0.0
 Requires:	python-modules >= 1:2.6
 %if %{without bundled}
-Requires:	python-charade
+Requires:	python-chardet >= 2.3.0
 Requires:	python-urllib3 >= %{urllib3ver}
 %endif
 # for python2 only to get SNI working. python3 doesn't need this
 Requires:	python-ndg-httpsclient
 Requires:	python-pyasn1
-Requires:	python-pyOpenSSL
+Requires:	python-pyOpenSSL >= 0.14
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -84,7 +91,8 @@ Group:		Development/Languages/Python
 Requires:	ca-certificates
 Requires:	python3-modules >= 1:3.2
 %if %{without bundled}
-Requires:	python3-charade
+Requires:	python3-chardet >= 2.3.0
+Requires:	python3-idna >= 2.0.0
 Requires:	python3-urllib3 >= %{urllib3ver}
 %endif
 
@@ -119,12 +127,10 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 %build
 %if %{with python2}
 %py_build %{?with_tests:test}
-%{?with_tests:cp requirements.txt test_requests.py build-2; cd build-2; PYTHONPATH=$(pwd)/lib %{__python} test_requests.py; cd ..}
 %endif
 
 %if %{with python3}
 %py3_build %{?with_tests:test}
-%{?with_tests:cp requirements.txt test_requests.py build-3; cd build-3; PYTHONPATH=$(pwd)/lib %{__python3} test_requests.py; cd ..}
 %endif
 
 %install
