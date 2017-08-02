@@ -1,13 +1,19 @@
---- requests-2.4.1/requests/certs.py~	2014-08-19 18:52:58.000000000 +0200
-+++ requests-2.4.1/requests/certs.py	2014-09-24 15:15:55.773227329 +0200
-@@ -18,8 +18,8 @@
- except ImportError:
-     def where():
-         """Return the preferred certificate bundle."""
--        # vendored bundle inside Requests
--        return os.path.join(os.path.dirname(__file__), 'cacert.pem')
-+        # system certificates from ca-certificates package
+diff -dur requests-2.18.2.orig/requests/certs.py requests-2.18.2/requests/certs.py
+--- requests-2.18.2.orig/requests/certs.py	2017-05-31 11:19:09.000000000 +0200
++++ requests-2.18.2/requests/certs.py	2017-08-01 14:30:44.000000000 +0200
+@@ -12,7 +12,14 @@
+ environment, you can change the definition of where() to return a separately
+ packaged CA bundle.
+ """
+-from certifi import where
++
++import os
++
++if os.path.exists("/etc/certs/ca-certificates.crt"):
++     def where():
 +        return "/etc/certs/ca-certificates.crt"
++else:
++    from certifi import where
  
  if __name__ == '__main__':
      print(where())
