@@ -48,9 +48,6 @@ BuildRequires:	python3-pytest-mock
 BuildRequires:	python3-urllib3 >= %{urllib3ver}
 %endif
 %endif
-Requires:	python-chardet >= 3.0.2
-Requires:	python-idna >= 2.5
-Requires:	python-urllib3 >= %{urllib3ver}
 Suggests:	ca-certificates
 # for python2 only to get SNI working. python3 doesn't need this
 Requires:	python-ndg-httpsclient
@@ -86,9 +83,6 @@ Ten pakiet zawiera moduł dla Pythona 2.x.
 Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
-Requires:	python-chardet >= 3.0.2
-Requires:	python-idna >= 2.5
-Requires:	python-urllib3 >= %{urllib3ver}
 Suggests:	ca-certificates
 
 %description -n python3-requests
