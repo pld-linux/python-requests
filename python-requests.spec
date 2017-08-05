@@ -3,56 +3,59 @@
 %bcond_with	tests	# test target (tests not included in dist tarball as of 2.13.0)
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
-#
+
 %define		urllib3ver	1.21.1
-%define 	module	requests
+%define		module		requests
+%define		egg_name	requests
+%define		pypi_name	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.18.2
+Version:	2.18.3
 Release:	1
 License:	Apache v2.0
 Group:		Development/Languages/Python
-Source0:	https://pypi.python.org/packages/07/2e/81fdfdfac91cf3cb2518fb149ac67caf0e081b485eab68e9aee63396f7e8/requests-2.18.2.tar.gz
-# Source0-md5:	49bd9924d3be341871bc922cde6f372e
+Source0:	https://files.pythonhosted.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+# Source0-md5:	c8f60cf816a35c0c3fef0a40d0e407a6
 Patch0:		system-cert.patch
 URL:		http://python-requests.org/
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.713
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.6
+BuildRequires:	python-setuptools
 %if %{with tests}
+BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-chardet >= 3.0.2
 BuildRequires:	python-idna >= 2.5
-BuildRequires:	python-urllib3 >= %{urllib3ver}
-BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-pytest >= 2.8.0
 BuildRequires:	python-pytest-cov
 BuildRequires:	python-pytest-httpbin >= 0.0.7
 BuildRequires:	python-pytest-mock
+BuildRequires:	python-urllib3 >= %{urllib3ver}
 %endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.2
 %if %{with tests}
+BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
 BuildRequires:	python3-idna >= 2.5
-BuildRequires:	python3-urllib3 >= %{urllib3ver}
-BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-pytest >= 2.8.0
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
 BuildRequires:	python3-pytest-mock
+BuildRequires:	python3-urllib3 >= %{urllib3ver}
 %endif
 %endif
-BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.713
-Suggests:	ca-certificates
 Requires:	python-chardet >= 3.0.2
 Requires:	python-idna >= 2.5
 Requires:	python-urllib3 >= %{urllib3ver}
+Suggests:	ca-certificates
 # for python2 only to get SNI working. python3 doesn't need this
 Requires:	python-ndg-httpsclient
-Requires:	python-pyasn1
 Requires:	python-pyOpenSSL >= 0.14
+Requires:	python-pyasn1
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -83,10 +86,10 @@ Ten pakiet zawiera moduł dla Pythona 2.x.
 Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
-Suggests:	ca-certificates
 Requires:	python-chardet >= 3.0.2
 Requires:	python-idna >= 2.5
 Requires:	python-urllib3 >= %{urllib3ver}
+Suggests:	ca-certificates
 
 %description -n python3-requests
 Requests is a HTTP library, written in Python, for human beings.
@@ -146,7 +149,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc HISTORY.rst README.rst
 %{py_sitescriptdir}/%{module}
-%{py_sitescriptdir}/%{module}-%{version}-py*.egg-info
+%{py_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
 %endif
 
 %if %{with python3}
@@ -154,5 +157,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc HISTORY.rst README.rst
 %{py3_sitescriptdir}/%{module}
-%{py3_sitescriptdir}/%{module}-%{version}-py*.egg-info
+%{py3_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
 %endif
