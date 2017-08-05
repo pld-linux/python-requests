@@ -53,6 +53,7 @@ Suggests:	ca-certificates
 Requires:	python-ndg-httpsclient
 Requires:	python-pyOpenSSL >= 0.14
 Requires:	python-pyasn1
+Requires:	python-urllib3 >= 1.22-2
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -83,6 +84,7 @@ Ten pakiet zawiera moduł dla Pythona 2.x.
 Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
+Requires:	python3-urllib3 >= 1.22-2
 Suggests:	ca-certificates
 
 %description -n python3-requests
