@@ -37,6 +37,7 @@ BuildRequires:	python-urllib3 >= %{urllib3ver}
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
