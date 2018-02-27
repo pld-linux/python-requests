@@ -11,12 +11,12 @@
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.18.3
+Version:	2.18.4
 Release:	1
 License:	Apache v2.0
 Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	c8f60cf816a35c0c3fef0a40d0e407a6
+# Source0-md5:	081412b2ef79bdc48229891af13f4d82
 Patch0:		system-cert.patch
 URL:		http://python-requests.org/
 BuildRequires:	rpm-pythonprov
