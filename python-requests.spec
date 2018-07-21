@@ -1,22 +1,22 @@
 #
 # Conditional build:
-%bcond_with	tests	# test target (tests not included in dist tarball as of 2.13.0)
+%bcond_with	tests	# test target [Pipfile file missing as of 2.19.1]
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
 
-%define		urllib3ver	1.21.1
+%define		urllib3_ver	1.21.1
 %define		module		requests
 %define		egg_name	requests
-%define		pypi_name	requests
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.18.4
-Release:	2
+Version:	2.19.1
+Release:	1
 License:	Apache v2.0
 Group:		Development/Languages/Python
-Source0:	https://files.pythonhosted.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	081412b2ef79bdc48229891af13f4d82
+#Source0Download: https://pypi.org/simple/requests/
+Source0:	https://files.pythonhosted.org/packages/source/r/requests/%{module}-%{version}.tar.gz
+# Source0-md5:	6c1a31afec9d614e2e71a91ee6ca2878
 Patch0:		system-cert.patch
 URL:		http://python-requests.org/
 BuildRequires:	rpm-pythonprov
@@ -27,26 +27,34 @@ BuildRequires:	python-setuptools
 %if %{with tests}
 BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-chardet >= 3.0.2
+BuildRequires:	python-chardet < 3.1.0
 BuildRequires:	python-idna >= 2.5
+BuildRequires:	python-idna < 2.8
 BuildRequires:	python-pytest >= 2.8.0
 BuildRequires:	python-pytest-cov
+BuildRequires:	python-pytest-forked
 BuildRequires:	python-pytest-httpbin >= 0.0.7
 BuildRequires:	python-pytest-mock
-BuildRequires:	python-urllib3 >= %{urllib3ver}
+BuildRequires:	python-urllib3 >= %{urllib3_ver}
+BuildRequires:	python-urllib3 < 1.24
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.4
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
+BuildRequires:	python3-chardet < 3.1.0
 BuildRequires:	python3-idna >= 2.5
+BuildRequires:	python3-idna < 2.8
 BuildRequires:	python3-pytest >= 2.8.0
 BuildRequires:	python3-pytest-cov
+BuildRequires:	python3-pytest-forked
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
 BuildRequires:	python3-pytest-mock
-BuildRequires:	python3-urllib3 >= %{urllib3ver}
+BuildRequires:	python3-urllib3 >= %{urllib3_ver}
+BuildRequires:	python3-urllib3 < 1.24
 %endif
 %endif
 Suggests:	ca-certificates
