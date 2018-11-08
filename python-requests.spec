@@ -10,13 +10,13 @@
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.19.1
+Version:	2.20.0
 Release:	1
 License:	Apache v2.0
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/requests/
 Source0:	https://files.pythonhosted.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	6c1a31afec9d614e2e71a91ee6ca2878
+# Source0-md5:	cf034ab571854453719594120366f467
 Patch0:		system-cert.patch
 URL:		http://python-requests.org/
 BuildRequires:	rpm-pythonprov
@@ -152,7 +152,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc HISTORY.rst README.rst
+%doc HISTORY.md README.md
 %{py_sitescriptdir}/%{module}
 %{py_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
 %endif
@@ -160,7 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-requests
 %defattr(644,root,root,755)
-%doc HISTORY.rst README.rst
+%doc HISTORY.md README.md
 %{py3_sitescriptdir}/%{module}
 %{py3_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
 %endif
