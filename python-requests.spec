@@ -22,9 +22,10 @@ URL:		http://python-requests.org/
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.713
 %if %{with python2}
-BuildRequires:	python-modules >= 1:2.6
+BuildRequires:	python-modules >= 1:2.7
 BuildRequires:	python-setuptools
 %if %{with tests}
+BuildRequires:	python-PySocks >= 1.5.8
 BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-chardet >= 3.0.2
 BuildRequires:	python-chardet < 3.1.0
@@ -32,17 +33,18 @@ BuildRequires:	python-idna >= 2.5
 BuildRequires:	python-idna < 2.8
 BuildRequires:	python-pytest >= 2.8.0
 BuildRequires:	python-pytest-cov
-BuildRequires:	python-pytest-forked
 BuildRequires:	python-pytest-httpbin >= 0.0.7
 BuildRequires:	python-pytest-mock
+BuildRequires:	python-pytest-xdist
 BuildRequires:	python-urllib3 >= %{urllib3_ver}
-BuildRequires:	python-urllib3 < 1.24
+BuildRequires:	python-urllib3 < 1.25
 %endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.4
 BuildRequires:	python3-setuptools
 %if %{with tests}
+BuildRequires:	python3-PySocks >= 1.5.8
 BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
 BuildRequires:	python3-chardet < 3.1.0
@@ -50,18 +52,17 @@ BuildRequires:	python3-idna >= 2.5
 BuildRequires:	python3-idna < 2.8
 BuildRequires:	python3-pytest >= 2.8.0
 BuildRequires:	python3-pytest-cov
-BuildRequires:	python3-pytest-forked
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
 BuildRequires:	python3-pytest-mock
+BuildRequires:	python3-pytest-xdist
 BuildRequires:	python3-urllib3 >= %{urllib3_ver}
-BuildRequires:	python3-urllib3 < 1.24
+BuildRequires:	python3-urllib3 < 1.25
 %endif
 %endif
 Suggests:	ca-certificates
 # for python2 only to get SNI working. python3 doesn't need this
-Requires:	python-ndg-httpsclient
+Requires:	python-cryptography >= 1.3.4
 Requires:	python-pyOpenSSL >= 0.14
-Requires:	python-pyasn1
 Requires:	python-urllib3 >= 1.22-2
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -93,6 +94,9 @@ Ten pakiet zawiera moduł dla Pythona 2.x.
 Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
+# for https
+Requires:	python3-cryptography >= 1.3.4
+Requires:	python3-pyOpenSSL >= 0.14
 Requires:	python3-urllib3 >= 1.22-2
 Suggests:	ca-certificates
 
