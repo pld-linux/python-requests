@@ -28,10 +28,10 @@ BuildRequires:	python-setuptools
 BuildRequires:	python-PySocks >= 1.5.8
 BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-chardet >= 3.0.2
-BuildRequires:	python-chardet < 3.1.0
+BuildRequires:	python-chardet < 4
 BuildRequires:	python-idna >= 2.5
-BuildRequires:	python-idna < 2.9
-BuildRequires:	python-pytest >= 2.8.0
+BuildRequires:	python-idna < 3
+BuildRequires:	python-pytest >= 3
 BuildRequires:	python-pytest-cov
 BuildRequires:	python-pytest-httpbin >= 0.0.7
 BuildRequires:	python-pytest-mock
@@ -47,10 +47,10 @@ BuildRequires:	python3-setuptools
 BuildRequires:	python3-PySocks >= 1.5.8
 BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
-BuildRequires:	python3-chardet < 3.1.0
+BuildRequires:	python3-chardet < 4
 BuildRequires:	python3-idna >= 2.5
-BuildRequires:	python3-idna < 2.9
-BuildRequires:	python3-pytest >= 2.8.0
+BuildRequires:	python3-idna < 3
+BuildRequires:	python3-pytest >= 3
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
 BuildRequires:	python3-pytest-mock
