@@ -10,13 +10,13 @@
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.25.1
+Version:	2.26.0
 Release:	1
 License:	Apache v2.0
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/requests/
 Source0:	https://files.pythonhosted.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	514d6f7eba77ada0b8c98ec7818828db
+# Source0-md5:	8c745949ad3e9ae83d9927fed213db8a
 Patch0:		system-cert.patch
 URL:		http://python-requests.org/
 BuildRequires:	rpm-pythonprov
@@ -29,6 +29,7 @@ BuildRequires:	python-PySocks >= 1.5.8
 BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-chardet >= 3.0.2
 BuildRequires:	python-chardet < 4
+# idna 3 not supported for python2
 BuildRequires:	python-idna >= 2.5
 BuildRequires:	python-idna < 3
 BuildRequires:	python-pytest >= 3
@@ -41,7 +42,7 @@ BuildRequires:	python-urllib3 < 1.26
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-modules >= 1:3.5
+BuildRequires:	python3-modules >= 1:3.6
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-PySocks >= 1.5.8
@@ -49,7 +50,7 @@ BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
 BuildRequires:	python3-chardet < 4
 BuildRequires:	python3-idna >= 2.5
-BuildRequires:	python3-idna < 3
+BuildRequires:	python3-idna
 BuildRequires:	python3-pytest >= 3
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
@@ -94,7 +95,7 @@ Ten pakiet zawiera moduł dla Pythona 2.x.
 Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
-Requires:	python3-modules >= 1:3.5
+Requires:	python3-modules >= 1:3.6
 # for https
 Requires:	python3-cryptography >= 1.3.4
 Requires:	python3-pyOpenSSL >= 0.14
