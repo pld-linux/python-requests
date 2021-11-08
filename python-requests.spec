@@ -11,7 +11,7 @@ Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
 Version:	2.26.0
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/requests/
@@ -96,8 +96,10 @@ Summary:	HTTP library for Python 3
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 3
 Group:		Development/Languages/Python
 Requires:	python3-modules >= 1:3.6
+Requires:	python3-charset_normalizer >= 2
 # for https
 Requires:	python3-cryptography >= 1.3.4
+Requires:	python3-idna >= 2.5
 Requires:	python3-pyOpenSSL >= 0.14
 Requires:	python3-urllib3 >= 1.22-2
 Suggests:	ca-certificates
