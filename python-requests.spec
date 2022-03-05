@@ -28,17 +28,17 @@ BuildRequires:	python-setuptools
 BuildRequires:	python-PySocks >= 1.5.8
 BuildRequires:	python-certifi >= 2017.4.17
 BuildRequires:	python-chardet >= 3.0.2
-BuildRequires:	python-chardet < 4
+BuildRequires:	python-chardet < 5
 # idna 3 not supported for python2
 BuildRequires:	python-idna >= 2.5
 BuildRequires:	python-idna < 3
 BuildRequires:	python-pytest >= 3
 BuildRequires:	python-pytest-cov
 BuildRequires:	python-pytest-httpbin >= 0.0.7
-BuildRequires:	python-pytest-mock
+BuildRequires:	python-pytest-mock >= 2.0.0
 BuildRequires:	python-pytest-xdist
 BuildRequires:	python-urllib3 >= %{urllib3_ver}
-BuildRequires:	python-urllib3 < 1.26
+BuildRequires:	python-urllib3 < 1.27
 %endif
 %endif
 %if %{with python3}
@@ -48,16 +48,16 @@ BuildRequires:	python3-setuptools
 BuildRequires:	python3-PySocks >= 1.5.8
 BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
-BuildRequires:	python3-chardet < 4
+BuildRequires:	python3-chardet < 5
 BuildRequires:	python3-idna >= 2.5
 BuildRequires:	python3-idna
 BuildRequires:	python3-pytest >= 3
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
-BuildRequires:	python3-pytest-mock
+BuildRequires:	python3-pytest-mock >= 2.0.0
 BuildRequires:	python3-pytest-xdist
 BuildRequires:	python3-urllib3 >= %{urllib3_ver}
-BuildRequires:	python3-urllib3 < 1.26
+BuildRequires:	python3-urllib3 < 1.27
 %endif
 %endif
 Suggests:	ca-certificates
@@ -145,8 +145,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with python2}
 %py_install
-%py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
-%py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
+
 %py_postclean
 %endif
 
