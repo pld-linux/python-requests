@@ -52,6 +52,7 @@ BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
 BuildRequires:	python3-chardet < 5
 BuildRequires:	python3-idna >= 2.5
+BuildRequires:	python3-idna < 4
 BuildRequires:	python3-pytest >= 3
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
