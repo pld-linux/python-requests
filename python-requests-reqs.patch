@@ -1,0 +1,11 @@
+--- requests-2.25.1/setup.py.orig	2020-12-16 18:43:25.000000000 +0100
++++ requests-2.25.1/setup.py	2021-01-24 18:05:52.042717398 +0100
+@@ -49,7 +49,7 @@
+ 
+ ]
+ test_requirements = [
+-    'pytest-httpbin==0.0.7',
++    'pytest-httpbin>=0.0.7',
+     'pytest-cov',
+     'pytest-mock',
+     'pytest-xdist',

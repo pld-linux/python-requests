@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_with	tests	# test target [Pipfile file missing as of 2.19.1]
+%bcond_with	tests	# pytest tests (one test fails with pytest-httpbin 1.0.0)
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
 
@@ -18,7 +18,9 @@ Group:		Development/Languages/Python
 Source0:	https://files.pythonhosted.org/packages/source/r/requests/%{module}-%{version}.tar.gz
 # Source0-md5:	8c745949ad3e9ae83d9927fed213db8a
 Patch0:		system-cert.patch
-URL:		http://python-requests.org/
+Patch1:		%{name}-reqs.patch
+Patch2:		%{name}-disable-xdist.patch
+URL:		https://docs.python-requests.org/
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.713
 %if %{with python2}
@@ -50,7 +52,6 @@ BuildRequires:	python3-certifi >= 2017.4.17
 BuildRequires:	python3-chardet >= 3.0.2
 BuildRequires:	python3-chardet < 5
 BuildRequires:	python3-idna >= 2.5
-BuildRequires:	python3-idna
 BuildRequires:	python3-pytest >= 3
 BuildRequires:	python3-pytest-cov
 BuildRequires:	python3-pytest-httpbin >= 0.0.7
@@ -130,14 +131,24 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 %prep
 %setup -q -n %{module}-%{version}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %if %{with python2}
-%py_build %{?with_tests:test}
+%py_build
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS="pytest_httpbin.plugin,pytest_mock" \
+%{__python} -m pytest tests
 %endif
 
 %if %{with python3}
-%py3_build %{?with_tests:test}
+%py3_build
+
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS="pytest_httpbin.plugin,pytest_mock" \
+%{__python3} -m pytest tests
 %endif
 
 %install
