@@ -11,7 +11,7 @@ Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
 Version:	2.26.0
-Release:	3
+Release:	4
 License:	Apache v2.0
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/requests/
@@ -139,17 +139,21 @@ Ten pakiet zawiera moduł dla Pythona 3.x.
 %if %{with python2}
 %py_build
 
+%if %{with tests}
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS="pytest_httpbin.plugin,pytest_mock" \
 %{__python} -m pytest tests
+%endif
 %endif
 
 %if %{with python3}
 %py3_build
 
+%if %{with tests}
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS="pytest_httpbin.plugin,pytest_mock" \
 %{__python3} -m pytest tests
+%endif
 %endif
 
 %install
