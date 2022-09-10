@@ -10,13 +10,14 @@
 Summary:	HTTP library for Python 2
 Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
-Version:	2.26.0
-Release:	5
+# keep 2.27.x here for python2 support
+Version:	2.27.1
+Release:	1
 License:	Apache v2.0
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/requests/
 Source0:	https://files.pythonhosted.org/packages/source/r/requests/%{module}-%{version}.tar.gz
-# Source0-md5:	8c745949ad3e9ae83d9927fed213db8a
+# Source0-md5:	bcc01b73974a305cc7c5b092e7d07004
 Patch0:		system-cert.patch
 Patch1:		%{name}-reqs.patch
 Patch2:		%{name}-disable-xdist.patch
@@ -49,8 +50,8 @@ BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-PySocks >= 1.5.8
 BuildRequires:	python3-certifi >= 2017.4.17
-BuildRequires:	python3-chardet >= 3.0.2
-BuildRequires:	python3-chardet < 5
+BuildRequires:	python3-charset_normalizer >= 2
+BuildRequires:	python3-charset_normalizer < 2.1
 BuildRequires:	python3-idna >= 2.5
 BuildRequires:	python3-idna < 4
 BuildRequires:	python3-pytest >= 3
