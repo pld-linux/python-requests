@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_with	tests	# pytest tests (one test fails with pytest-httpbin 1.0.0)
 %bcond_without	python2	# CPython 2.x module
-%bcond_without	python3	# CPython 3.x module
+%bcond_with	python3	# CPython 3.x module
 
 %define		urllib3_ver	1.21.1
 %define		module		requests
@@ -12,7 +12,7 @@ Summary(pl.UTF-8):	Biblioteka HTTP dla Pythona 2
 Name:		python-%{module}
 # keep 2.27.x here for python2 support
 Version:	2.27.1
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		Development/Languages/Python
 #Source0Download: https://pypi.org/simple/requests/
